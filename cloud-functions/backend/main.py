@@ -57,9 +57,9 @@ def upload(request):
             client = storage.Client()
             bucket = client.get_bucket(os.getenv('bucket_name'))
             blob = bucket.get_blob(os.getenv('trained_model_name'))
-            pthmodel = blob.download_as_string()
-            
-            modeldict = pickle.loads(pthmodel) 
+            bytesfile = io.BytesIO(blob.download_as_string())
+
+            modeldict = torch.load(bytesfile) 
             model = RES_HASHNET()
             model.load_state_dict(modeldict)
             tensor = torch.rand(1,3,224,224)
