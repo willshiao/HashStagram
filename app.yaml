@@ -1,0 +1,10 @@
+runtime: python37
+
+handlers:
+- url: /bootstrap
+  static_dir: bootstrap
+
+- url: /.*
+  script: main.app
+
+instance_class: F4
