@@ -53,7 +53,7 @@ def upload(request):
             client = storage.Client()
             bucket = client.get_bucket(os.getenv('bucket_name'))
             blob = bucket.get_blob(os.getenv('trained_model_name'))
-            pthmodel = blob.download_as_string("model.pth")
+            pthmodel = blob.download_as_string()
             
             modeldict = json.loads(pthmodel)
             model = RES_HASHNET()
