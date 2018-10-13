@@ -52,7 +52,7 @@ def upload(request):
             client = storage.Client()
             bucket = client.get_bucket(os.getenv('bucket_name'))
             blob = bucket.get_blob(os.getenv('trained_model_name'))
-            blob.save_as_file("model.pth")
+            blob.download_to_filename("model.pth")
             
             stats = os.stat("model.pth")
             return stats.st_size
