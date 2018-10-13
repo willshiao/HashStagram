@@ -1,15 +1,37 @@
 import os
-from google.cloud import pubsub
+from google.cloud import pubsub, storage
 from flask import Response
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from wideresnet import *
+import torch
+
+class RES_HASHNET(nn.Module):
+    
+    def __init__(self):
+        super(RES_HASHNET, self).__init__()
+        self.object_extractor = models.resnet18(pretrained=True)
+        self.object_extractor.eval()
+        self.background_extractor = resnet18(pretrained=True)
+        self.background_extractor.eval()
+        self.fc1 = nn.Linear(2000,4096)
+        self.fc2 = nn.Linear(4096,4096)
+        self.output = nn.Linear(4096,1000)
+    def forward(self, x):
+        obj_feat = self.object_extractor(x)
+        print(obj_feat.size())
+        scene_feat = self.background_extractor(x)
+        print(scene_feat.size())
+        feats = torch.cat((obj_feat, scene_feat), dim=1)
+        output = self.fc1(feats)
+        output = self.fc2(output)
+        output = self.output(output)
+        return output
 
 def upload(request):
-    """Responds to any HTTP request.
-    Args:
-        request (flask.Request): HTTP request object.
-    Returns:
-        The response text or any set of values that can be turned into a
-        Response object using
-        `make_response <http://flask.pocoo.org/docs/0.12/api/#flask.Flask.make_response>`.
+    """
+        Takes in a photo and attempts to serve to the user hashtags.
     """
     request_json = request.get_json()
 
@@ -24,7 +46,22 @@ def upload(request):
             return Response({topic_name + " published"}, status=200);
         else:
             return Response({"Missing photo argument"},status=400)
-    elif os.getenv('mechanism_type') == 'storage':
-        return Response({"TBA"}, status=403)
+
+    elif os.gnv('mechanism_type') == 'storage':
+        if request_json and 'photo' in request_json:
+            client = storage.Client()
+            bucket = client.get_bucket(os.getenv('bucket_name'))
+            blob = bucket.get_blob(os.getenv('trained_model_name'))
+            blob.save_as_file("model.pth")
+            
+            stats = os.stat("model.pth")
+            return stats.st_size
+
+            model = RES_HASHNET()
+            model.load_state_dict(torch.load("model.pth"))
+            tensor = torch.rand(1,3,224,224)
+            model.forward(tensor)
+        else:
+            return Response({"Missing photo argument"}, status=400)
     else:
         return Response({"Misconfiguration error, contact administrator"}, status=500)
