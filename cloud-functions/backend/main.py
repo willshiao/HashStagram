@@ -13,7 +13,7 @@ def upload(request):
     """
     request_json = request.get_json()
 
-		if os.getenv('mechanism_type') == 'pubsub':
+    if os.getenv('mechanism_type') == 'pubsub':
         if request_json and 'photo' in request_json:
             publisher = pubsub.PublisherClient()
             topic_name = 'projects/{project_id}/topics/{topic}'.format(
