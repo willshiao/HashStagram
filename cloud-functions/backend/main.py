@@ -6,6 +6,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from wideresnet import *
 import torch
+import json
 
 class RES_HASHNET(nn.Module):
     
@@ -52,15 +53,15 @@ def upload(request):
             client = storage.Client()
             bucket = client.get_bucket(os.getenv('bucket_name'))
             blob = bucket.get_blob(os.getenv('trained_model_name'))
-            blob.download_to_filename("model.pth")
+            pthmodel = blob.download_as_string("model.pth")
             
-            stats = os.stat("model.pth")
-            return stats.st_size
-
+            modeldict = json.loads(pthmodel)
             model = RES_HASHNET()
-            model.load_state_dict(torch.load("model.pth"))
+            model.load_state_dict(modeldict)
             tensor = torch.rand(1,3,224,224)
             model.forward(tensor)
+
+            return Response({"Loaded successfully"}, status=200)
         else:
             return Response({"Missing photo argument"}, status=400)
     else:
