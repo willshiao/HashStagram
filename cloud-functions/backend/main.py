@@ -1,12 +1,16 @@
 import os
+import torch
+import pickle
+
 from google.cloud import pubsub, storage
 from flask import Response
+
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import torchvision.models as models
+
 from wideresnet import *
-import torch
-import pickle
 
 class RES_HASHNET(nn.Module):
     
