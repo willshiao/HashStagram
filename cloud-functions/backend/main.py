@@ -47,7 +47,7 @@ def upload(request):
         else:
             return Response({"Missing photo argument"},status=400)
 
-    elif os.gnv('mechanism_type') == 'storage':
+    elif os.getenv('mechanism_type') == 'storage':
         if request_json and 'photo' in request_json:
             client = storage.Client()
             bucket = client.get_bucket(os.getenv('bucket_name'))
