@@ -1,3 +1,5 @@
+*.tsh
+
 # Logs
 logs
 *.log
