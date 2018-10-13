@@ -1,5 +1,6 @@
 # GCP dependencies
 google-cloud-pubsub
+google-cloud-storage
 
 # PyTorch dependencies
 http://download.pytorch.org/whl/cpu/torch-0.4.1-cp37-cp37m-win_amd64.whl ; sys_platform == "windows"
