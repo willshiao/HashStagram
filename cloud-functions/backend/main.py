@@ -6,7 +6,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from wideresnet import *
 import torch
-import json
+import pickle
 
 class RES_HASHNET(nn.Module):
     
@@ -55,7 +55,7 @@ def upload(request):
             blob = bucket.get_blob(os.getenv('trained_model_name'))
             pthmodel = blob.download_as_string()
             
-            modeldict = json.loads(pthmodel)
+            modeldict = pickle.loads(pthmodel) 
             model = RES_HASHNET()
             model.load_state_dict(modeldict)
             tensor = torch.rand(1,3,224,224)
