@@ -75,7 +75,7 @@ $(function () {
             reader.onload = function (evt) {
               if (evt.target.readyState == FileReader.DONE) {
                 const hashtagText = resData.data
-                  .map(tag => `<a href="https://www.instagram.com/explore/tags/${tag}/" class="badge badge-primary">#${tag}</a>`)
+                  .map(tag => `<a href="https://www.instagram.com/explore/tags/${tag}/" class="badge badge-primary hashtag">#${tag}</a>`)
                   .join(' ')
 
                 $('#image-info').html(`
