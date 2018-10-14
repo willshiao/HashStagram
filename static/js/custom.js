@@ -56,7 +56,7 @@ $(function () {
         const f = pond.getFile().file
 
 
-        postData('https://us-central1-sdhacksproject2018.cloudfunctions.net/dummy', f)
+        postData('/api/upload', f)
             .then(res => {
                 console.log('Got response from Jerry :)', res)
                 const reader = new FileReader()
@@ -65,7 +65,6 @@ $(function () {
                 reader.onload = function (evt) {
                     if (evt.target.readyState == FileReader.DONE) {
                         $('#dispupload').html(`<img src="${evt.target.result}" class="uploaded-img">`)
-                        // Audrey wrote this
                         $('#img-caption').text(res.data.join(', '))
                         formDisabled = false
                         $('#upload-btn').removeClass('disabled')
