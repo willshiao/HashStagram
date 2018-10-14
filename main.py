@@ -32,16 +32,20 @@ def upload():
     if request.files and 'photo' in request.files:
         photo = request.files['photo']
         img = Image.open(photo)
+        img = img.resize((224,224))
         app.logger.error(img)
+
         width, height = img.size
         app.logger.error(str(width) + " " +  str(height))
+        
         data = numpy.asarray(img, dtype=numpy.float32)
-        app.logger.error(data)
-        #data = numpy.reshape(data, (3, width, height))
+        data = numpy.reshape(data, (3, width, height))
+        app.logger.error(data.shape)
+
         tensor = torch.from_numpy(data).unsqueeze_(0)
-        app.logger.error(tensor)
+        app.logger.error(tensor.size())
+        
         model = app.config['MODEL']
-        app.logger.error(model)
         #return Response({str(tensor.size())}, status=200)
         #tensor = torch.rand(1,3,224,224)
         result = model.forward(tensor)
