@@ -1,9 +1,407 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Example</title>
-    </head>
-    <body>
-        <p>This is an example of a simple HTML page with one paragraph.</p>
-    </body>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>HashStagram</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+    rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic'
+    rel='stylesheet' type='text/css'>
+
+  <!-- Plugin CSS -->
+  <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+  <link href="vendor/filepond/filepond.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/creative.min.css" rel="stylesheet">
+  <link href="css/custom.css" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+
+          </li>
+            <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#page-top">About</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#output">Output</a>
+          </li>
+
+          <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#gallery">Gallery</a>
+            </li>
+
+          <li class="nav-item">
+            <!-- so it would be good form to change #contact to a more appropriate name here, but... -->
+            <a class="nav-link js-scroll-trigger" href="#contact">How It Was Done</a>
+          </li>
+
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#future">Extensions</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <header class="masthead text-center text-white d-flex">
+      <div class="container my-auto">
+        <div class="row">
+          <div class="col-lg-10 mx-auto">
+            <h1 class="text-uppercase">
+              <strong>HashStagram</strong>
+            </h1>
+          <hr>
+
+          <br />
+
+        </div>
+        <div class="col-lg-8 mx-auto">
+          <p class="text-faded mb-5">Upload a photo. Based on the data from the HARRISON dataset and a few handy
+            machine learning algorithms, we'll select some choice hashtags <del>since you evidently don't know how to</del> reflective of current usage trends!
+          </p>
+          <p class="text-faded mb-3">Please note that only one picture should be uploaded at a time. The accepted file types are: .png, .jpg, .jpeg, and .bmp. 
+            </p>
+          <!-- Will said to worry about this later so have some behavior that's not taken care of -->
+          <input type="file" class="filepond" name="filepond" multiple data-max-file-size="3MB" data-max-files="3">
+          <p>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="#" id="upload-btn">Upload Image</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  <!--
+    <section class="bg-primary" id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h2 class="section-heading text-white">We've got what you need!</h2>
+            <hr class="light my-4">
+            <p class="text-faded mb-4">Start Bootstrap has everything you need to get your new website up and running in no time! All of the templates and themes on Start Bootstrap are open source, free to download, and easy to use. No strings attached!</p>
+            <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Get Started!</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading">Gallery</h2>
+            <hr class="my-4">
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <i class="fas fa-4x fa-gem text-primary mb-3 sr-icon-1"></i>
+              <h3 class="mb-3">Sturdy Templates</h3>
+              <p class="text-muted mb-0">Our templates are updated regularly so they don't break.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <i class="fas fa-4x fa-paper-plane text-primary mb-3 sr-icon-2"></i>
+              <h3 class="mb-3">Ready to Ship</h3>
+              <p class="text-muted mb-0">You can use this theme as is, or you can make changes!</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <i class="fas fa-4x fa-code text-primary mb-3 sr-icon-3"></i>
+              <h3 class="mb-3">Up to Date</h3>
+              <p class="text-muted mb-0">We update dependencies to keep things fresh.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <i class="fas fa-4x fa-heart text-primary mb-3 sr-icon-4"></i>
+              <h3 class="mb-3">Made with Love</h3>
+              <p class="text-muted mb-0">You have to make your websites with love these days!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-0" id="portfolio">
+      <div class="container-fluid p-0">
+        <div class="row no-gutters popup-gallery">
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="img/portfolio/fullsize/1.jpg">
+              <img class="img-fluid" src="img/portfolio/thumbnails/1.jpg" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    Category
+                  </div>
+                  <div class="project-name">
+                    Project Name
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="img/portfolio/fullsize/2.jpg">
+              <img class="img-fluid" src="img/portfolio/thumbnails/2.jpg" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    Category
+                  </div>
+                  <div class="project-name">
+                    Project Name
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="img/portfolio/fullsize/3.jpg">
+              <img class="img-fluid" src="img/portfolio/thumbnails/3.jpg" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    Category
+                  </div>
+                  <div class="project-name">
+                    Project Name
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="img/portfolio/fullsize/4.jpg">
+              <img class="img-fluid" src="img/portfolio/thumbnails/4.jpg" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    Category
+                  </div>
+                  <div class="project-name">
+                    Project Name
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="img/portfolio/fullsize/5.jpg">
+              <img class="img-fluid" src="img/portfolio/thumbnails/5.jpg" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    Category
+                  </div>
+                  <div class="project-name">
+                    Project Name
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <a class="portfolio-box" href="img/portfolio/fullsize/6.jpg">
+              <img class="img-fluid" src="img/portfolio/thumbnails/6.jpg" alt="">
+              <div class="portfolio-box-caption">
+                <div class="portfolio-box-caption-content">
+                  <div class="project-category text-faded">
+                    Category
+                  </div>
+                  <div class="project-name">
+                    Project Name
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-dark text-white">
+      <div class="container text-center">
+        <h2 class="mb-4">Free Download at Start Bootstrap!</h2>
+        <a class="btn btn-light btn-xl sr-button" href="http://startbootstrap.com/template-overviews/creative/">Download Now!</a>
+      </div>
+    </section>
+-->
+
+  <section id="output">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center" id="output-items">
+          <h1 class="section-heading">HashStagram Output</h1>
+          <p class="text mb-3">Please be patient; it'll take a moment for your results to be displayed.</p>
+          <div class="w3-display-container">
+            <div id="dispupload"></div>
+            <span id="img-caption"></span>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center" id="gallery-items">
+            <h1 class="section-heading">The Gallery</h1>
+            <div class="w3-display-container">
+              <!-- <div id="dispupload"></div> -->
+              <!-- <span id="img-caption"></span> -->
+            </div> 
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+          <h1 class="section-heading">(The Inspiration and) How It Was Done</h1>
+        </div>
+      </div>
+      
+    <div class="row">
+        <div class="col-lg-4 ml-auto text-center">
+          <i class="far fa-file-alt fa-7x"></i>
+          <div class="icon-caption">
+            <a href="https://arxiv.org/pdf/1605.05054.pdf">HARRISON: A Benchmark on HAshtag Recommendation for
+              Real-world Images in Social Networks</a>
+          </div>
+
+        </div>
+        <div class="col-lg-4 mr-auto text-center">
+          <i class="fab fa-github fa-7x"></i>
+          <div class="icon-caption">
+            <a href="https://github.com/willshiao/sdhacks-2018">HashStagram Repository</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 mr-auto text-center">
+            <i class="fas fa-cloud fa-7x"></i>
+          <div class="icon-caption">
+            <a href="https://cloud.google.com/">Google Cloud Platform</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <br/>
+ <div class="container">
+      <div class="row">
+          <div class="col-lg-4 ml-auto text-center">
+              <i class="fas fa-book fa-7x"></i>
+              <div class="icon-caption">
+                <a href="https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py">AlexNet</a>
+              </div>
+          </div>
+
+          <div class="col-lg-4 ml-auto text-center">
+              <i class="fab fa-microsoft fa-7x"></i>
+              <div class="icon-caption">
+                <a href="https://github.com/Microsoft/MMdnn">Microsoft's MMdnn</a>
+              </div>
+          </div>
+
+          <div class="col-lg-4 ml-auto text-center">
+              <i class="fas fa-balance-scale fa-7x"></i>
+              <div class="icon-caption">
+                <a href="https://github.com/GKalliatakis/Keras-VGG16-places365">Keras-VGG16-places365
+                </a>
+              </div>
+        </div>
+    </div>
+    </div>
+
+    <br/>
+
+    <div class="col-lg-8 mx-auto text-left">
+    <p>The <a href="https://github.com/sanofrank/HARRISON-Dataset">HARRISON dataset</a> was assembled by 
+      <a href="https://arxiv.org/pdf/1605.05054.pdf">Park, et. al.</a> and is composed of over 57,000 photos and their respective hashtags from Instagram.
+      Only the most popular 1000 out of 165,000 <a href="https://en.wikipedia.org/wiki/Hashtag">hashtags</a> from these photos were kept in the dataset. 
+      Based on this dataset, given a picture, HashStagram aims to assign relevant and appropriate hashtags to the picture. 
+      This was achieved by [insert quick summary of methodology].</p>
+    </div>
+  </section>
+
+  <section id="future">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h1 class="section-heading">Current Scope and Possible Extensions</h1>
+          </div>
+            <div class="text-left">
+                <ul>
+                    <li>HashStagram tends to perform well under [insert circumstances]. [Insert short explanation as to why.]</li>
+                    <li>HashStagram tends to perform poorer under [insert circumstances]. [Insert short explanation as to why, and how this 
+                      problem might be approached.]</li>
+                    <li>Aside from the aforementioned solution, other possible areas of development are:</li>
+                      <ul>
+                        <li>Something, and why that'd be important or significant</li>
+                        <li>Other stuff</li>
+                        <li>Other stuff</li>
+                      </ul> 
+                  </ul> 
+            </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+  <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+  <script src="vendor/filepond/filepond.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/creative.min.js"></script>
+  <script src="js/custom.js"></script>
+
+
+</body>
+
 </html>
