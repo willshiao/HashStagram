@@ -1,3 +1,4 @@
+import pickle
 
 from google.cloud import pubsub, storage
 
@@ -7,47 +8,74 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torchvision.models as models
 from main import app
+MODEL_PATH = './model.tsh'
+class VGG_HASHNET(nn.Module):
 
-from wideresnet import *
-
-
-
-class RES_HASHNET(nn.Module):
-    def __init__(self):
-        super(RES_HASHNET, self).__init__()
-        self.object_extractor = models.resnet18(pretrained=True)
+    def __init__(self, pretrained=False):
+        super(VGG_HASHNET, self).__init__()
+        self.object_extractor = models.vgg16(pretrained=True)
+        self.object_extractor.classifier = nn.Sequential(*list(self.object_extractor.classifier.children())[:-2])
         self.object_extractor.eval()
-        self.background_extractor = resnet18(pretrained=True)
+
+        self.background_extractor = models.__dict__['alexnet'](num_classes=365)
+        checkpoint = torch.load('./alexnet_places365.pth.tar', map_location=lambda storage, loc: storage)
+        state_dict = {str.replace(k,'module.',''): v for k,v in checkpoint['state_dict'].items()}
+        self.background_extractor.load_state_dict(state_dict)
+        self.background_extractor.classifier = nn.Sequential(*list(self.background_extractor.classifier.children())[:-1])
         self.background_extractor.eval()
-        self.fc1 = nn.Linear(2000,4096)
+
+        self.fc1 = nn.Linear(4096 * 2, 4096)
+#         self.fc1 = nn.DataParallel(self.fc1)
         self.fc2 = nn.Linear(4096,4096)
-        self.output = nn.Linear(4096,1000)
+#         self.fc2 = nn.DataParallel(self.fc2)
+
+        self.output = nn.Linear(4096,997)
+        if pretrained:
+            loaded = torch.load(MODEL_PATH)
+            self.load_state_dict({ str.replace(k,'module.', ''): v for k,v in loaded.items() })
+#         print(self.object_extractor)
+#         print("============================")
+#         print(self.background_extractor)
     def forward(self, x):
         obj_feat = self.object_extractor(x)
-        print(obj_feat.size())
+#         print(obj_feat.size())
         scene_feat = self.background_extractor(x)
-        print(scene_feat.size())
+#         print(scene_feat.size())
         feats = torch.cat((obj_feat, scene_feat), dim=1)
+#         print(feats.size())
         output = self.fc1(feats)
         output = self.fc2(output)
         output = self.output(output)
-        return output
+#         print('Layer:', output)
+        return torch.sigmoid(output)
 
-model = RES_HASHNET()
 
 # initializes model by loading into memory from trained model
 def load_model():
-    model = RES_HASHNET()
+    model = VGG_HASHNET(pretrained=True)
     app.logger.info("loading")
     client = storage.Client()
     bucket = client.get_bucket("models_cta003")
-    blob = bucket.get_blob("TEHBESTMODEL.pth")
+    blob = bucket.get_blob("vgg_hashnet_r3_v7.pth")
     blob.download_to_filename("model.tsh")
+    blob = bucket.get_blob("alexnet_places365.pth.tar")
+    blob.download_to_filename("alexnet_places365.pth.tar")
+
+    blob = bucket.get_blob("tag_map.pickle")
+    blob.download_to_filename("tag_map.pickle")
+    
+    model = VGG_HASHNET(pretrained=True)
+    tag_map = None
+    with open("tag_map.pickle", "rb") as f:
+        tag_map = pickle.load(f)
 
     modeldict = torch.load("model.tsh")
     model.load_state_dict(modeldict)
+    
+
     app.logger.info("finished initial loading")
     app.config['MODEL'] = model
+    app.config['TAG_MAP'] = tag_map
 
 # Sample Gunicorn configuration file.
 
