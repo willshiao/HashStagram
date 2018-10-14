@@ -65,20 +65,22 @@ $(function () {
           $('#upload-btn').removeClass('disabled')
           return
         }
-        
-        const resData = res.json()
-        console.log('Got response from Jerry :)', resData)
-        const reader = new FileReader()
-        reader.readAsDataURL(f)
 
-        reader.onload = function (evt) {
-          if (evt.target.readyState == FileReader.DONE) {
-            $('#dispupload').html(`<img src="${evt.target.result}" class="uploaded-img">`)
-            $('#img-caption').text(resData.data.join(', '))
-            formDisabled = false
-            $('#upload-btn').removeClass('disabled')
-          }
-        }
+        res.json()
+          .then(resData => {
+            console.log('Got response from Jerry :)', resData)
+            const reader = new FileReader()
+            reader.readAsDataURL(f)
+
+            reader.onload = function (evt) {
+              if (evt.target.readyState == FileReader.DONE) {
+                $('#dispupload').html(`<img src="${evt.target.result}" class="uploaded-img">`)
+                $('#img-caption').text(resData.data.join(', '))
+                formDisabled = false
+                $('#upload-btn').removeClass('disabled')
+              }
+            }
+          })
       })
 
   })
