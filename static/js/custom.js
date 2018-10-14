@@ -1,3 +1,14 @@
+// multiple pngs (up to 3) accepted without spitting out error message
+FilePond.setOptions({
+  // allowBrowse: false,
+  acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/bmp'],
+  maxFileSize: '10MB',
+  maxTotalFileSize: '10MB',
+  maxFiles: 1
+})
+
+const pond = FilePond.create(document.querySelector('input.filepond'))
+
 // We want to preview images, so we register
 // the Image Preview plugin, We also register 
 // exif orientation (to correct mobile image
@@ -9,29 +20,15 @@ FilePond.registerPlugin(
   FilePondPluginFileValidateType,
   FilePondPluginImageValidateSize,
   FilePondPluginFileValidateSize
-);
+)
 
-// multiple pngs (up to 3) accepted without spitting out error message
-FilePond.setOptions({
-  // allowBrowse: false,
-  acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/bmp']
-});
-
-// Select the file input and use 
-// create() to turn it into a pond
-const trueOptions = {
-  maxFiles: 1
-}
-const pond = FilePond.create(document.querySelector('input.filepond'))
-Object.assign(pond, trueOptions)
-
-function postData(url = ``, file) {
+function postData (url, file) {
   // Default options are marked with *
   const formData = new FormData()
 
   formData.append('photo', file)
 
-  return fetch(url, {
+  return fetch (url, {
     method: 'POST',
     body: formData
   })
