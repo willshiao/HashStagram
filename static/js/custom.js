@@ -1,10 +1,15 @@
+FilePond.setOptions({
+  maxFiles: 1
+})
+
+FilePond.registerPlugin(FilePondPluginImagePreview)
+
 // multiple pngs (up to 3) accepted without spitting out error message
 FilePond.setOptions({
   // allowBrowse: false,
   acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/bmp'],
   maxFileSize: '10MB',
-  maxTotalFileSize: '10MB',
-  maxFiles: 1
+  maxTotalFileSize: '10MB'
 })
 
 const pond = FilePond.create(document.querySelector('input.filepond'))
@@ -15,7 +20,6 @@ const pond = FilePond.create(document.querySelector('input.filepond'))
 // orientation) and size validation, to prevent
 // large files from being added
 FilePond.registerPlugin(
-  FilePondPluginImagePreview,
   FilePondPluginImageExifOrientation,
   FilePondPluginFileValidateType,
   FilePondPluginImageValidateSize,
