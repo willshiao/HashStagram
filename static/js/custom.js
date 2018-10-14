@@ -65,13 +65,13 @@ $(function () {
         return res.json()
       })
       .then(res => {
-        console.log('Got response from Jerry :)', resData)
+        console.log('Got response from Jerry :)', res)
         const reader = new FileReader()
         reader.readAsDataURL(f)
 
         reader.onload = function (evt) {
           if (evt.target.readyState == FileReader.DONE) {
-            const hashtagText = resData.data
+            const hashtagText = res.data
               .map(tag => `<a href="https://www.instagram.com/explore/tags/${tag}/" class="badge badge-primary hashtag">#${tag}</a>`)
               .join(' ')
 
