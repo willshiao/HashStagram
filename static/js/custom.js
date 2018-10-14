@@ -22,13 +22,13 @@ FilePond.registerPlugin(
   FilePondPluginFileValidateSize
 )
 
-function postData (url, file) {
+function postData(url, file) {
   // Default options are marked with *
   const formData = new FormData()
 
   formData.append('photo', file)
 
-  return fetch (url, {
+  return fetch(url, {
     method: 'POST',
     body: formData
   })
@@ -60,42 +60,33 @@ $(function () {
           $('#img-caption').text('An error occurred: ', res.statusText)
           formDisabled = false
           $('#upload-btn').removeClass('disabled')
-          return
+          return Promise.reject(new Error('Invalid server response'))
         }
+        return res.json()
+      })
+      .then(res => {
+        console.log('Got response from Jerry :)', resData)
+        const reader = new FileReader()
+        reader.readAsDataURL(f)
 
-        res.json()
-          .then(resData => {
-            console.log('Got response from Jerry :)', resData)
-            const reader = new FileReader()
-            reader.readAsDataURL(f)
+        reader.onload = function (evt) {
+          if (evt.target.readyState == FileReader.DONE) {
+            const hashtagText = resData.data
+              .map(tag => `<a href="https://www.instagram.com/explore/tags/${tag}/" class="badge badge-primary hashtag">#${tag}</a>`)
+              .join(' ')
 
-            reader.onload = function (evt) {
-              if (evt.target.readyState == FileReader.DONE) {
-                const hashtagText = resData.data
-                  .map(tag => `<a href="https://www.instagram.com/explore/tags/${tag}/" class="badge badge-primary hashtag">#${tag}</a>`)
-                  .join(' ')
+            $('#image-info').html(`
+            <img class="card-img-top" src="${evt.target.result}" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text">${hashtagText}</p>
+            </div>
+            `)
 
-                $('#image-info').html(`
-                <img class="card-img-top" src="${evt.target.result}" alt="Card image cap">
-                <div class="card-body">
-                  <p class="card-text">${hashtagText}</p>
-                </div>
-                `)
-
-                formDisabled = false
-                $('#upload-btn').removeClass('disabled')
-              }
-            }
-          })
+            formDisabled = false
+            $('#upload-btn').removeClass('disabled')
+          }
+        }
       })
 
   })
 })
-
-// postData(`https://us-central1-sdhacksproject2018.cloudfunctions.net/dummy`, {answer: 42})
-// // find 'image data' variable; also, how to link this behavior to button in index.html?
-// .then(data => console.log(JSON.stringify(data))) // JSON-string from `response.json()` call
-// .catch(error => console.error(error));
-
-
-
