@@ -24,7 +24,7 @@ CORS(app)
 
 def convert_to_hashtag(results):
     hashtag_list = []
-    for i in results[-1]:
+    for i in torch.topk(results, 5)[-1]:
         hashtag_list.append(app.config['TAG_MAP'][i])
     return hashtag_list
 

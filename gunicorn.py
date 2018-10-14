@@ -1,4 +1,5 @@
 import pickle
+import tracemalloc
 
 from google.cloud import pubsub, storage
 
@@ -8,19 +9,20 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torchvision.models as models
 from main import app
-MODEL_PATH = './model.tsh'
-class VGG_HASHNET(nn.Module):
 
+MODEL_PATH = './model.tsh'
+
+class VGG_HASHNET(nn.Module):
     def __init__(self, pretrained=False):
+        tracemalloc.start()
         super(VGG_HASHNET, self).__init__()
         self.object_extractor = models.vgg16(pretrained=True)
         self.object_extractor.classifier = nn.Sequential(*list(self.object_extractor.classifier.children())[:-2])
         self.object_extractor.eval()
 
+        app.logger.warning(tracemalloc.take_snapshot())
+
         self.background_extractor = models.__dict__['alexnet'](num_classes=365)
-        checkpoint = torch.load('./alexnet_places365.pth.tar', map_location=lambda storage, loc: storage)
-        state_dict = {str.replace(k,'module.',''): v for k,v in checkpoint['state_dict'].items()}
-        self.background_extractor.load_state_dict(state_dict)
         self.background_extractor.classifier = nn.Sequential(*list(self.background_extractor.classifier.children())[:-1])
         self.background_extractor.eval()
 
@@ -31,8 +33,13 @@ class VGG_HASHNET(nn.Module):
 
         self.output = nn.Linear(4096,997)
         if pretrained:
-            loaded = torch.load(MODEL_PATH)
+            loaded = torch.load(MODEL_PATH, map_location='cpu')
             self.load_state_dict({ str.replace(k,'module.', ''): v for k,v in loaded.items() })
+        else:
+            checkpoint = torch.load('./alexnet_places365.pth.tar', map_location=lambda storage, loc: storage)
+            state_dict = {str.replace(k,'module.',''): v for k,v in checkpoint['state_dict'].items()}
+            self.background_extractor.load_state_dict(state_dict)
+
 #         print(self.object_extractor)
 #         print("============================")
 #         print(self.background_extractor)
@@ -52,7 +59,6 @@ class VGG_HASHNET(nn.Module):
 
 # initializes model by loading into memory from trained model
 def load_model():
-    model = VGG_HASHNET(pretrained=True)
     app.logger.info("loading")
     client = storage.Client()
     bucket = client.get_bucket("models_cta003")
@@ -68,10 +74,6 @@ def load_model():
     tag_map = None
     with open("tag_map.pickle", "rb") as f:
         tag_map = pickle.load(f)
-
-    modeldict = torch.load("model.tsh")
-    model.load_state_dict(modeldict)
-    
 
     app.logger.info("finished initial loading")
     app.config['MODEL'] = model
