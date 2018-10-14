@@ -22,6 +22,12 @@ from wideresnet import *
 app = Flask(__name__)
 CORS(app)
 
+def convert_to_hashtag(results):
+    hashtag_list = []
+    for i in results[-1]:
+        hashtag_list.append(app.config['TAG_MAP'][i])
+    return hashtag_list
+
 @app.route("/api/upload", methods = ["POST"])
 def upload():
     """
@@ -49,6 +55,7 @@ def upload():
         #return Response({str(tensor.size())}, status=200)
         #tensor = torch.rand(1,3,224,224)
         result = model.forward(tensor)
-        return Response({"forwarded successfully"}, status=200)
+        result = convert_to_hashtag(result)
+        return Response({str(result)}, status=200)
     else:           
         return Response({"Missing photo argument"}, status=400)
