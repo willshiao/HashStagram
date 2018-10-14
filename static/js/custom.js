@@ -74,8 +74,17 @@ $(function () {
 
             reader.onload = function (evt) {
               if (evt.target.readyState == FileReader.DONE) {
-                $('#dispupload').html(`<img src="${evt.target.result}" class="uploaded-img">`)
-                $('#img-caption').text(resData.data.join(', '))
+                const hashtagText = resData.data
+                  .map(tag => `<a href="https://www.instagram.com/explore/tags/${tag}/">#${tag}</a>`)
+                  .join(' ')
+
+                $('#image-info').html(`
+                <img class="card-img-top" src="${evt.target.result}" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">${hashtagText}</p>
+                </div>
+                `)
+
                 formDisabled = false
                 $('#upload-btn').removeClass('disabled')
               }
