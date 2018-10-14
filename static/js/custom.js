@@ -5,10 +5,10 @@
 // large files from being added
 FilePond.registerPlugin(
     FilePondPluginImagePreview,
-    FilePondPluginImageExifOrientation,
-    FilePondPluginFileValidateType,
-    FilePondPluginImageValidateSize,
-    FilePondPluginFileValidateSize
+    FilePondPluginImageExifOrientation
+    // FilePondPluginFileValidateType
+    // FilePondPluginImageValidateSize,
+    // FilePondPluginFileValidateSize
 );
 
 // multiple pngs (up to 3) accepted without spitting out error message
