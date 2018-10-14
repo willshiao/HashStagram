@@ -37,7 +37,7 @@ function postData(url = ``, file) {
   })
     .then((response) => {
       console.log(response)
-      return Promise.resolve(response.json())
+      return Promise.resolve(response)
       // now put response on the picture (see below, line 51 or so)
     })
     .catch(err => {
@@ -65,14 +65,16 @@ $(function () {
           $('#upload-btn').removeClass('disabled')
           return
         }
-        console.log('Got response from Jerry :)', res)
+        
+        const resData = res.json()
+        console.log('Got response from Jerry :)', resData)
         const reader = new FileReader()
         reader.readAsDataURL(f)
 
         reader.onload = function (evt) {
           if (evt.target.readyState == FileReader.DONE) {
             $('#dispupload').html(`<img src="${evt.target.result}" class="uploaded-img">`)
-            $('#img-caption').text(res.data.join(', '))
+            $('#img-caption').text(resData.data.join(', '))
             formDisabled = false
             $('#upload-btn').removeClass('disabled')
           }
