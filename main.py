@@ -2,10 +2,13 @@ import os
 import torch
 import pickle
 import io
+import numpy
+from PIL import Image
 
 from google.cloud import pubsub, storage
 
-from flask import Flask, Response, request
+from flask import Flask, Response, request, render_template
+from flask_cors import CORS
 from singleton_decorator import singleton
 
 import torch.nn as nn
@@ -16,16 +19,11 @@ import torchvision.models as models
 from wideresnet import *
 
 app = Flask(__name__)
+CORS(app)
 
-if __name__ == '__main__':
-    # This is used when running locally only. When deploying to Google App
-    # Engine, a webserver process such as Gunicorn will serve the app. This
-    # can be configured by adding an `entrypoint` to app.yaml.
-    app.run(host='127.0.0.1', port=8080, debug=True)
-
-@app.route("/")
-def root():
-    return "server alive"
+@app.route('/', methods = ["GET"])
+def index():
+    return render_template('index.html')
 
 @app.route("/upload", methods = ["POST"])
 def upload():
@@ -34,9 +32,16 @@ def upload():
     """
     request_json = request.get_json()
 
-    if request_json and 'photo' in request_json:
+    if request.files and 'photo' in request.files:
+        photo = request.files['photo']
+        img = Image.open(photo)
+        width, height = img.size
+        data = numpy.asarray(img, dtype=numpy.float32)
+        data = numpy.reshape(data, (3, width, height))
+        tensor = torch.from_numpy(data).unsqueeze(0)
         model = app.config['MODEL']
-        tensor = torch.rand(1,3,224,224)
+        #return Response({str(tensor.size())}, status=200)
+        #tensor = torch.rand(1,3,224,224)
         result = model.forward(tensor)
         return Response({"forwarded successfully"}, status=200)
     else:

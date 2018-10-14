@@ -1,6 +1,8 @@
 # Webserver dependencies
 flask
 singleton_decorator
+flask-cors
+Pillow
 
 # GCP dependencies
 google-cloud-pubsub
@@ -10,5 +12,6 @@ google-cloud-storage
 http://download.pytorch.org/whl/cpu/torch-0.4.1-cp37-cp37m-win_amd64.whl ; sys_platform == "windows"
 #http://download.pytorch.org/whl/cpu/torch-0.4.1.post2-cp37-cp37m-linux_x86_64.whl ; sys_platform == "linux"
 http://download.pytorch.org/whl/cpu/torch-0.4.1-cp35-cp35m-linux_x86_64.whl ; sys_platform == "linux"
-
 torchvision
+numpy
+

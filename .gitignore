@@ -1,4 +1,5 @@
 *.tsh
+__pycache__/
 
 # Logs
 logs
