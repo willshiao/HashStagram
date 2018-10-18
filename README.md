@@ -10,7 +10,8 @@ Given a picture, based on a models trained over 57,000 Instagram photos and thei
 
 ## Team Members
 - [Audrey Der](https://github.com/ader003)
-  + Wrote the README, and did the frontend.
+  + Wrote the README.
+  + Did the frontend.
 - [Calvin Ta](https://github.com/tacalvin)
   + Ran a GPU sweatshop.
   + Worked on the ResNet implementation, but it didn't work out.
